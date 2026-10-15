@@ -1,0 +1,16 @@
+# Python 3.11+ (developed and tested on 3.13). Exact versions used for the Review 2 results.
+numpy==2.5.4
+pandas==3.0.6
+scikit-learn==1.9.1
+joblib==1.6.0
+lightgbm==4.7.0
+xgboost==3.4.1
+shap==0.53.0
+matplotlib==3.11.2
+fastapi==0.143.2
+uvicorn[standard]==0.54.0
+pydantic==2.14.1
+slowapi==0.1.10
+httpx==0.28.1
+pytest==9.1.1
+hypothesis==6.169.4
