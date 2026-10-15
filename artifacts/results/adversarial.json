@@ -1,0 +1,328 @@
+{
+  "n_urls": 1000,
+  "seed": 7,
+  "model": "lightgbm",
+  "rows": [
+    {
+      "operator": "percent_encoding",
+      "description": "encode 3 path characters as %XX",
+      "expected_flag": "S_PCT_ENCODE",
+      "applied": 1000,
+      "of": 1000,
+      "flag_recall": 1.0,
+      "flag_present_before": 0.004,
+      "detected_before": 973,
+      "evasion_rate": 0.0308,
+      "mean_score_delta": -0.0113
+    },
+    {
+      "operator": "double_encoding",
+      "description": "encode one path character as %25XX",
+      "expected_flag": "S_DOUBLE_ENCODE",
+      "applied": 1000,
+      "of": 1000,
+      "flag_recall": 1.0,
+      "flag_present_before": 0.0,
+      "detected_before": 973,
+      "evasion_rate": 0.0092,
+      "mean_score_delta": 0.0109
+    },
+    {
+      "operator": "homoglyph_swap",
+      "description": "swap one domain letter for a Cyrillic/Greek look-alike",
+      "expected_flag": "S_MIXED_SCRIPT",
+      "applied": 844,
+      "of": 1000,
+      "flag_recall": 0.936,
+      "flag_present_before": 0.0,
+      "detected_before": 817,
+      "evasion_rate": 0.0,
+      "mean_score_delta": 0.0074
+    },
+    {
+      "operator": "punycode",
+      "description": "homoglyph swap, then encode the label as xn--",
+      "expected_flag": "S_PUNY_DETECT",
+      "applied": 844,
+      "of": 1000,
+      "flag_recall": 1.0,
+      "flag_present_before": 0.0,
+      "detected_before": 817,
+      "evasion_rate": 0.0037,
+      "mean_score_delta": 0.0067
+    },
+    {
+      "operator": "subdomain_insertion",
+      "description": "prepend a brand-like subdomain chain",
+      "expected_flag": "S_SUBDOMAIN_DEPTH",
+      "applied": 1000,
+      "of": 1000,
+      "flag_recall": 1.0,
+      "flag_present_before": 0.0,
+      "detected_before": 973,
+      "evasion_rate": 0.0,
+      "mean_score_delta": 0.0375
+    },
+    {
+      "operator": "at_injection",
+      "description": "prepend brand@ as fake userinfo",
+      "expected_flag": "S_AT_ABUSE",
+      "applied": 1000,
+      "of": 1000,
+      "flag_recall": 1.0,
+      "flag_present_before": 0.0,
+      "detected_before": 973,
+      "evasion_rate": 0.0,
+      "mean_score_delta": 0.0266
+    },
+    {
+      "operator": "ip_form",
+      "description": "replace host by a decimal-form IPv4 (TEST-NET)",
+      "expected_flag": "S_IP_OBFUSCATED",
+      "applied": 1000,
+      "of": 1000,
+      "flag_recall": 1.0,
+      "flag_present_before": 0.0,
+      "detected_before": 973,
+      "evasion_rate": 0.0,
+      "mean_score_delta": 0.0167
+    },
+    {
+      "operator": "port_insertion",
+      "description": "add a non-standard port",
+      "expected_flag": "S_PORT_ANOMALY",
+      "applied": 879,
+      "of": 1000,
+      "flag_recall": 1.0,
+      "flag_present_before": 0.0,
+      "detected_before": 852,
+      "evasion_rate": 0.0012,
+      "mean_score_delta": 0.0234
+    },
+    {
+      "operator": "case_toggle",
+      "description": "randomise host letter case (no lexical signature)",
+      "expected_flag": null,
+      "applied": 850,
+      "of": 1000,
+      "flag_recall": null,
+      "detected_before": 823,
+      "evasion_rate": 0.0,
+      "mean_score_delta": 0.0311
+    },
+    {
+      "operator": "dslash_injection",
+      "description": "insert // after the authority",
+      "expected_flag": "S_REDIRECT_ABUSE",
+      "applied": 1000,
+      "of": 1000,
+      "flag_recall": 1.0,
+      "flag_present_before": 0.0,
+      "detected_before": 973,
+      "evasion_rate": 0.0,
+      "mean_score_delta": 0.0144
+    }
+  ],
+  "examples": [
+    {
+      "operator": "percent_encoding",
+      "mutated_defanged": "http://42[.]52[.]74[.]62:37833/bi%6E[.]%73%68"
+    },
+    {
+      "operator": "percent_encoding",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com/Medlegd%61/holographic-calculator-3d/refs/heads/main/app/calc%75lator-holograp%68ic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "percent_encoding",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com/pjfos%73i324-tech/climafy/refs/heads/ma%69n/physicianary/So%66tware-chipling[.]zip"
+    },
+    {
+      "operator": "percent_encoding",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com/Islem-Fakhfekh/esp32s3-%77a%76eshare-2[.]8-touch-lcd/refs/heads/master/components/sd_serv%69ces/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "percent_encoding",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com/gust8522/xposter/refs/%68eads/main/sr%63/Software-1[.]8[.]zi%70"
+    },
+    {
+      "operator": "double_encoding",
+      "mutated_defanged": "http://42[.]52[.]74[.]62:37833/bin[.]%2573h"
+    },
+    {
+      "operator": "double_encoding",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com/Medlegda/holographic-calculator-3d/refs/heads/main/app/c%2561lculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "double_encoding",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com/pjfossi324-tech/clim%2561fy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "double_encoding",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com/Islem-Fakhfekh/esp32s3-waves%2568are-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "double_encoding",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com/gust8522/xposter/refs/%2568eads/main/src/Software-1[.]8[.]zip"
+    },
+    {
+      "operator": "homoglyph_swap",
+      "mutated_defanged": "https://raw[.]giтhubusercontent[.]com/Medlegda/holographic-calculator-3d/refs/heads/main/app/calculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "homoglyph_swap",
+      "mutated_defanged": "https://raw[.]githubuserсontent[.]com/pjfossi324-tech/climafy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "homoglyph_swap",
+      "mutated_defanged": "https://raw[.]giтhubusercontent[.]com/Islem-Fakhfekh/esp32s3-waveshare-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "homoglyph_swap",
+      "mutated_defanged": "https://raw[.]giтhubusercontent[.]com/gust8522/xposter/refs/heads/main/src/Software-1[.]8[.]zip"
+    },
+    {
+      "operator": "homoglyph_swap",
+      "mutated_defanged": "https://raw[.]githubuserconтent[.]com/Developingcountryindianmonetaryunit573/Chad-malnutrition-prediction/refs/heads/main/chelaship/prediction_malnutrition_Chad_3[.]4[.]zip"
+    },
+    {
+      "operator": "punycode",
+      "mutated_defanged": "https://raw[.]xn--gitubusercontent-ebp[.]com/Medlegda/holographic-calculator-3d/refs/heads/main/app/calculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "punycode",
+      "mutated_defanged": "https://raw[.]xn--githubusercntent-wkn[.]com/pjfossi324-tech/climafy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "punycode",
+      "mutated_defanged": "https://raw[.]xn--gthubusercontent-9vn[.]com/Islem-Fakhfekh/esp32s3-waveshare-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "punycode",
+      "mutated_defanged": "https://raw[.]xn--githubusrcontent-ggn[.]com/gust8522/xposter/refs/heads/main/src/Software-1[.]8[.]zip"
+    },
+    {
+      "operator": "punycode",
+      "mutated_defanged": "https://raw[.]xn--githubusrcontent-ggn[.]com/Developingcountryindianmonetaryunit573/Chad-malnutrition-prediction/refs/heads/main/chelaship/prediction_malnutrition_Chad_3[.]4[.]zip"
+    },
+    {
+      "operator": "subdomain_insertion",
+      "mutated_defanged": "http://login[.]microsoft[.]com[.]verify[.]42[.]52[.]74[.]62:37833/bin[.]sh"
+    },
+    {
+      "operator": "subdomain_insertion",
+      "mutated_defanged": "https://secure[.]apple[.]com[.]auth[.]raw[.]githubusercontent[.]com/Medlegda/holographic-calculator-3d/refs/heads/main/app/calculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "subdomain_insertion",
+      "mutated_defanged": "https://secure[.]apple[.]com[.]account-update[.]raw[.]githubusercontent[.]com/pjfossi324-tech/climafy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "subdomain_insertion",
+      "mutated_defanged": "https://login[.]microsoft[.]com[.]secure-login[.]raw[.]githubusercontent[.]com/Islem-Fakhfekh/esp32s3-waveshare-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "subdomain_insertion",
+      "mutated_defanged": "https://secure[.]apple[.]com[.]secure-login[.]raw[.]githubusercontent[.]com/gust8522/xposter/refs/heads/main/src/Software-1[.]8[.]zip"
+    },
+    {
+      "operator": "at_injection",
+      "mutated_defanged": "http://login[.]microsoftonline[.]com@42[.]52[.]74[.]62:37833/bin[.]sh"
+    },
+    {
+      "operator": "at_injection",
+      "mutated_defanged": "https://login[.]microsoftonline[.]com@raw[.]githubusercontent[.]com/Medlegda/holographic-calculator-3d/refs/heads/main/app/calculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "at_injection",
+      "mutated_defanged": "https://login[.]microsoftonline[.]com@raw[.]githubusercontent[.]com/pjfossi324-tech/climafy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "at_injection",
+      "mutated_defanged": "https://www[.]paypal[.]com@raw[.]githubusercontent[.]com/Islem-Fakhfekh/esp32s3-waveshare-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "at_injection",
+      "mutated_defanged": "https://www[.]paypal[.]com@raw[.]githubusercontent[.]com/gust8522/xposter/refs/heads/main/src/Software-1[.]8[.]zip"
+    },
+    {
+      "operator": "ip_form",
+      "mutated_defanged": "http://3221226157:37833/bin[.]sh"
+    },
+    {
+      "operator": "ip_form",
+      "mutated_defanged": "https://3221226058/Medlegda/holographic-calculator-3d/refs/heads/main/app/calculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "ip_form",
+      "mutated_defanged": "https://3221226083/pjfossi324-tech/climafy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "ip_form",
+      "mutated_defanged": "https://3221226005/Islem-Fakhfekh/esp32s3-waveshare-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "ip_form",
+      "mutated_defanged": "https://3221226130/gust8522/xposter/refs/heads/main/src/Software-1[.]8[.]zip"
+    },
+    {
+      "operator": "port_insertion",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com:8080/Medlegda/holographic-calculator-3d/refs/heads/main/app/calculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "port_insertion",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com:2083/pjfossi324-tech/climafy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "port_insertion",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com:2083/Islem-Fakhfekh/esp32s3-waveshare-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "port_insertion",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com:8443/gust8522/xposter/refs/heads/main/src/Software-1[.]8[.]zip"
+    },
+    {
+      "operator": "port_insertion",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com:8888/Developingcountryindianmonetaryunit573/Chad-malnutrition-prediction/refs/heads/main/chelaship/prediction_malnutrition_Chad_3[.]4[.]zip"
+    },
+    {
+      "operator": "case_toggle",
+      "mutated_defanged": "https://raw[.]GItHUBusErCONTenT[.]cOm/Medlegda/holographic-calculator-3d/refs/heads/main/app/calculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "case_toggle",
+      "mutated_defanged": "https://raW[.]giThuBusERCOnTEnT[.]com/pjfossi324-tech/climafy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "case_toggle",
+      "mutated_defanged": "https://raw[.]GitHuBusErconTeNT[.]COM/Islem-Fakhfekh/esp32s3-waveshare-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "case_toggle",
+      "mutated_defanged": "https://rAW[.]gIthuBuseRCONteNt[.]com/gust8522/xposter/refs/heads/main/src/Software-1[.]8[.]zip"
+    },
+    {
+      "operator": "case_toggle",
+      "mutated_defanged": "https://Raw[.]GithUbUSERCOnTeNt[.]Com/Developingcountryindianmonetaryunit573/Chad-malnutrition-prediction/refs/heads/main/chelaship/prediction_malnutrition_Chad_3[.]4[.]zip"
+    },
+    {
+      "operator": "dslash_injection",
+      "mutated_defanged": "http://42[.]52[.]74[.]62:37833//bin[.]sh"
+    },
+    {
+      "operator": "dslash_injection",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com//Medlegda/holographic-calculator-3d/refs/heads/main/app/calculator-holographic-d-1[.]4-alpha[.]4[.]zip"
+    },
+    {
+      "operator": "dslash_injection",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com//pjfossi324-tech/climafy/refs/heads/main/physicianary/Software-chipling[.]zip"
+    },
+    {
+      "operator": "dslash_injection",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com//Islem-Fakhfekh/esp32s3-waveshare-2[.]8-touch-lcd/refs/heads/master/components/sd_services/src/touch_lcd_waveshare_s_esp_2[.]1-beta[.]5[.]zip"
+    },
+    {
+      "operator": "dslash_injection",
+      "mutated_defanged": "https://raw[.]githubusercontent[.]com//gust8522/xposter/refs/heads/main/src/Software-1[.]8[.]zip"
+    }
+  ]
+}

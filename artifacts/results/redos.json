@@ -1,0 +1,135 @@
+{
+  "timeout_s": 5.0,
+  "re": {
+    "nested": [
+      {
+        "n": 10,
+        "seconds": 0.00012270011939108372,
+        "timed_out": false
+      },
+      {
+        "n": 14,
+        "seconds": 0.0006011000368744135,
+        "timed_out": false
+      },
+      {
+        "n": 16,
+        "seconds": 0.0020453999750316143,
+        "timed_out": false
+      },
+      {
+        "n": 18,
+        "seconds": 0.00919030001387,
+        "timed_out": false
+      },
+      {
+        "n": 20,
+        "seconds": 0.03649879992008209,
+        "timed_out": false
+      },
+      {
+        "n": 22,
+        "seconds": 0.13211180013604462,
+        "timed_out": false
+      },
+      {
+        "n": 24,
+        "seconds": 0.5778359998948872,
+        "timed_out": false
+      },
+      {
+        "n": 26,
+        "seconds": 2.1549300998449326,
+        "timed_out": false
+      },
+      {
+        "n": 28,
+        "seconds": null,
+        "timed_out": true
+      }
+    ],
+    "url_regex": [
+      {
+        "n": 10,
+        "seconds": 0.0007369997911155224,
+        "timed_out": false
+      },
+      {
+        "n": 14,
+        "seconds": 0.008948899805545807,
+        "timed_out": false
+      },
+      {
+        "n": 16,
+        "seconds": 0.037782799918204546,
+        "timed_out": false
+      },
+      {
+        "n": 18,
+        "seconds": 0.15221930015832186,
+        "timed_out": false
+      },
+      {
+        "n": 20,
+        "seconds": 0.6814583002123982,
+        "timed_out": false
+      },
+      {
+        "n": 22,
+        "seconds": 2.380252500064671,
+        "timed_out": false
+      },
+      {
+        "n": 24,
+        "seconds": null,
+        "timed_out": true
+      }
+    ]
+  },
+  "dfa": {
+    "nested": [
+      {
+        "n": 10,
+        "seconds": 2.00001522898674e-06
+      },
+      {
+        "n": 100,
+        "seconds": 1.2499978765845299e-05
+      },
+      {
+        "n": 1000,
+        "seconds": 0.00012090010568499565
+      },
+      {
+        "n": 10000,
+        "seconds": 0.0012260000221431255
+      },
+      {
+        "n": 100000,
+        "seconds": 0.012551899999380112
+      }
+    ],
+    "url_scanner": [
+      {
+        "n": 10,
+        "seconds": 2.3700064048171043e-05
+      },
+      {
+        "n": 100,
+        "seconds": 5.859998054802418e-05
+      },
+      {
+        "n": 1000,
+        "seconds": 0.0004792001564055681
+      },
+      {
+        "n": 10000,
+        "seconds": 0.005192299839109182
+      },
+      {
+        "n": 100000,
+        "seconds": 0.06191090005449951
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+Message-ID: <20260901.1234@mail.example-corp.com>
+Date: Mon, 1 Sep 2026 09:15:00 +0530
+From: "Asha Rao" <asha.rao@example-corp.com>
+To: team@example-corp.com
+Reply-To: asha.rao@example-corp.com
+Return-Path: <bounce@mail.example-corp.com>
+Subject: Quarterly planning notes,
+ continued on a folded header line
+	and a tab-folded third line
+Received: from mail.example-corp.com (mail.example-corp.com [192.0.2.10])
+ by mx.example-corp.com with ESMTPS id abc123
+Authentication-Results: mx.example-corp.com; spf=pass smtp.mailfrom=example-corp.com; dkim=pass; dmarc=pass
+
+Hi team,
+
+The planning document is at https://docs.example-corp.com/planning/q3 and the
+wiki page is www.example-corp.com/wiki/q3.
+
+Thanks,
+Asha

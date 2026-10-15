@@ -1,0 +1,16 @@
+Message-ID: <x91@evil.example>
+Date: Tue, 2 Sep 2026 02:11:00 +0000
+From: "PayPal Service" <service@paypa1-security.example>
+To: victim@example.org
+Reply-To: support@collector.example.net
+Return-Path: <bounce@bulk-mailer.example.org>
+Subject: Your account has been limited
+Authentication-Results: mx.example.org; spf=fail smtp.mailfrom=bulk-mailer.example.org; dkim=none; dmarc=fail
+
+Dear customer,
+
+Please verify your account within 24 hours:
+https://paypal.com@paypa1-security.example/verify?next=https%3A%2F%2Fevil.example
+or http://3232235777/login
+
+PayPal
