@@ -1,0 +1,118 @@
+{
+  "model": "lightgbm",
+  "domain_only": true,
+  "rows": [
+    {
+      "config": "A_lexical",
+      "groups": [
+        "lexical"
+      ],
+      "n_features": 14,
+      "cv_pr_auc_mean": 0.9312,
+      "cv_pr_auc_std": 0.0154,
+      "test": {
+        "threshold": 0.5,
+        "precision": 0.9165,
+        "recall": 0.7199,
+        "f1": 0.8064,
+        "fpr": 0.0317,
+        "roc_auc": 0.9113,
+        "pr_auc": 0.8954,
+        "confusion": {
+          "tn": 14432,
+          "fp": 472,
+          "fn": 2015,
+          "tp": 5179
+        },
+        "n": 22098,
+        "positives": 7194
+      }
+    },
+    {
+      "config": "B_lexical+domain",
+      "groups": [
+        "lexical",
+        "domain"
+      ],
+      "n_features": 28,
+      "cv_pr_auc_mean": 0.9528,
+      "cv_pr_auc_std": 0.0091,
+      "test": {
+        "threshold": 0.5,
+        "precision": 0.94,
+        "recall": 0.7595,
+        "f1": 0.8402,
+        "fpr": 0.0234,
+        "roc_auc": 0.9388,
+        "pr_auc": 0.9234,
+        "confusion": {
+          "tn": 14555,
+          "fp": 349,
+          "fn": 1730,
+          "tp": 5464
+        },
+        "n": 22098,
+        "positives": 7194
+      }
+    },
+    {
+      "config": "C_+automata",
+      "groups": [
+        "lexical",
+        "domain",
+        "automata"
+      ],
+      "n_features": 161,
+      "cv_pr_auc_mean": 0.9528,
+      "cv_pr_auc_std": 0.0095,
+      "test": {
+        "threshold": 0.5,
+        "precision": 0.9404,
+        "recall": 0.7549,
+        "f1": 0.8375,
+        "fpr": 0.0231,
+        "roc_auc": 0.9384,
+        "pr_auc": 0.9232,
+        "confusion": {
+          "tn": 14560,
+          "fp": 344,
+          "fn": 1763,
+          "tp": 5431
+        },
+        "n": 22098,
+        "positives": 7194
+      }
+    },
+    {
+      "config": "D_all",
+      "groups": [
+        "lexical",
+        "domain",
+        "encoding",
+        "automata",
+        "path_query",
+        "symtab"
+      ],
+      "n_features": 187,
+      "cv_pr_auc_mean": 0.925,
+      "cv_pr_auc_std": 0.0488,
+      "test": {
+        "threshold": 0.5,
+        "precision": 0.9386,
+        "recall": 0.7433,
+        "f1": 0.8296,
+        "fpr": 0.0235,
+        "roc_auc": 0.9376,
+        "pr_auc": 0.9222,
+        "confusion": {
+          "tn": 14554,
+          "fp": 350,
+          "fn": 1847,
+          "tp": 5347
+        },
+        "n": 22098,
+        "positives": 7194
+      }
+    }
+  ]
+}
