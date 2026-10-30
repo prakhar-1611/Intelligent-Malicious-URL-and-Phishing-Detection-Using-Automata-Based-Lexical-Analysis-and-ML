@@ -8,7 +8,7 @@ custom lexer built from formal regular definitions:
 
 The scanner emits typed tokens, a symbol table, and **security-aware anomaly flags** (punycode/IDN,
 mixed-script homoglyphs, percent/double encoding, IP-host obfuscation, `@` and `//` delimiter abuse,
-control bytes, excessive subdomains). These, together with automata-derived features such as DFA
+control bytes, excessive subdomains, typosquatted brand domains). These, together with automata-derived features such as DFA
 state-visit statistics, feed a gradient-boosted classifier. The classifier's score is mapped to a
 Safe / Suspicious / Malicious verdict, with explanations that point back to the exact tokens and
 DFA states involved.
@@ -22,6 +22,9 @@ DFA states involved.
 - **Linear-time, ReDoS-resistant scanning.** One DFA transition per input character, with no backtracking regex.
 - **Explainable ML.** Logistic Regression, Random Forest, LightGBM and XGBoost with isotonic calibration and
   thresholds chosen on validation data. SHAP contributions are mapped back to the tokens and states they came from.
+- **Full email analysis.** Raw emails and `.eml` files are parsed into headers, MIME parts and links. Checks cover
+  sender mismatches, look-alike senders, SPF/DKIM/DMARC failures, HTML links that hide their real target, and risky
+  attachments. Every link is scanned by the URL lexer.
 - **Adversarial evaluation.** A mutation engine applies encoding, homoglyph, subdomain-insertion, `@`-injection
   and IP-obfuscation evasions and measures what the lexer catches and what slips past the model.
 - **Glass-box dashboard.** A React UI shows token highlighting, step-by-step NFA/DFA construction, and a live
@@ -60,8 +63,10 @@ DFA states involved.
 
 Flags that a regular language cannot express are **attribute checks** after lexing and are labelled `source: "attr"`:
 `S_PORT_ANOMALY` (allowlist), `S_SUBDOMAIN_DEPTH` (threshold), `S_MIXED_SCRIPT` (Unicode scripts),
-`S_IP_OBFUSCATED` (decimal/hex/octal IPv4 arithmetic), `S_OPEN_REDIRECT_PARAM`, `S_HOMOGLYPH` (TS #39 skeleton vs brands).
-The email lexer adds `S_FROM_REPLYTO_MISMATCH`, `S_RETURNPATH_MISMATCH`, `S_DISPLAYNAME_SPOOF`.
+`S_IP_OBFUSCATED` (decimal/hex/octal IPv4 arithmetic), `S_OPEN_REDIRECT_PARAM`, `S_HOMOGLYPH` (TS #39 skeleton vs brands),
+`S_TYPOSQUAT` (registered domain one or two edits from a brand; shown as a flag, not yet a model input).
+The email lexer adds `S_FROM_REPLYTO_MISMATCH`, `S_RETURNPATH_MISMATCH`, `S_DISPLAYNAME_SPOOF`, `S_LOOKALIKE_SENDER`,
+`S_AUTH_FAIL`, `S_LINK_MISMATCH`, `S_RISKY_ATTACHMENT`.
 
 ---
 
@@ -75,15 +80,19 @@ python -m venv .venv
 pip install -r requirements.txt
 
 python -m lexer.build_automata        # offline construction -> artifacts/lexer_tables.json
-pytest -q                             # 530 tests: equivalence, golden tokens, flags, scanner, email, API
+pytest -q                             # 567 tests: equivalence, golden tokens, flags, scanner, email, API
 ```
 
-Run the demo (two terminals):
+Run the demo. On Windows, double-click `start.bat` after the setup above; it starts both servers and opens the
+dashboard. Otherwise use two terminals, with the virtual environment active in the first:
 
 ```bash
-uvicorn api.main:app --port 8000      # API (uses a heuristic until a model is trained)
-cd web && npm install && npm run dev  # dashboard at http://localhost:5173
+python -m uvicorn api.main:app --port 8000   # API (uses a heuristic until a model is trained)
+cd web && npm install && npm run dev         # dashboard at http://localhost:5173
 ```
+
+Trained model files are not in git, so a fresh clone uses the heuristic until you train or copy them in.
+[RUN_GUIDE.md](RUN_GUIDE.md) has the full guide: checks, page-by-page use, retraining and troubleshooting.
 
 Train on real data and regenerate every result (downloads PhishTank, URLhaus, OpenPhish, Tranco and Hacker News link lists; no listed URL is ever visited):
 
@@ -93,6 +102,7 @@ bash scripts/reproduce.sh             # or  .\scripts\reproduce.ps1  on Windows
 
 | Command | Output |
 |---|---|
+| `python -m ml.email_links --enron-sample 100000` | `data/raw/email_ham_urls.txt` (benign links from legitimate email) |
 | `python -m ml.data_pipeline --download` | `data/processed/dataset.csv`, `dataset_stats.json` |
 | `python -m ml.train [--domain-only]` | `artifacts/model.joblib`, `results/model_comparison*.json` |
 | `python -m ml.ablation [--domain-only]` | `results/ablation*.json/.md` |
@@ -108,7 +118,8 @@ bash scripts/reproduce.sh             # or  .\scripts\reproduce.ps1  on Windows
 |---|---|---|
 | POST | `/analyze` `{url}` | verdict, score, tokens, flags, trace, steps, symbol table, `explanation[]` |
 | POST | `/analyze/batch` `{urls}` | up to 500 URLs |
-| POST | `/analyze/email` `{raw}` | header tokens, address checks, flags, scanned body URLs |
+| POST | `/analyze/email` `{raw}` | verdict, header tokens, address checks, flags, MIME parts, scanned links (up to 1 MB) |
+| GET | `/samples/emails` | the built-in sample emails |
 | GET | `/automata/{rule}?stage=nfa\|dfa\|min` | graph JSON for any rule, Review 1 example, or `mode:<MODE>` |
 | POST | `/automata/custom` `{pattern, stage}` | build any regex live (blow-up guarded) |
 | GET | `/scanner/states` | minimal DFA of every mode (Live Trace) |
@@ -116,17 +127,18 @@ bash scripts/reproduce.sh             # or  .\scripts\reproduce.ps1  on Windows
 | GET | `/health` | status |
 
 Hardening (details and STRIDE in [docs/SECURITY.md](docs/SECURITY.md)): 2048-character URL cap, Pydantic
-validation, slowapi rate limits, CORS allowlist, security headers, defanged security log, and no URL is ever fetched (no SSRF surface).
+validation, 1 MB email cap, slowapi rate limits, CORS allowlist, security headers, defanged security log, and no URL is ever fetched (no SSRF surface).
 
 ## Dashboard pages
 
 | Page | What it shows |
 |---|---|
-| **Analyze** | verdict gauge, colour-coded token chips, flags highlighted inside the URL, symbol table |
+| **Analyze** | one-click demo URLs, verdict gauge, colour-coded token chips, flags highlighted inside the URL, symbol table |
 | **Explain** | SHAP bar chart; clicking a feature highlights the characters and DFA states it came from |
 | **Automata Lab** | any rule or custom regex: syntax tree/postfix → Thompson NFA → subset DFA → minimal DFA, with state counts |
 | **Live Trace** | the scanner animated one character at a time over the minimal DFA; anomaly states turn red |
-| **Batch** | CSV upload, summary charts, defanged CSV export |
+| **Batch** | pasted URLs, CSV upload or the demo set; summary charts, defanged CSV export |
+| **Email** | paste a raw email or upload a `.eml` file; verdict, highlighted headers, MIME parts and link results |
 | **Results** | model comparison, ROC, policy confusion, ablation, adversarial, latency, ReDoS figures (read from JSON) |
 
 ## Repository layout
@@ -138,19 +150,21 @@ lexer/  regex_parser.py thompson.py rules.py email_lexer.py                     
         hopcroft.py moore.py alphabet.py scanner.py build_automata.py export.py           [Amrita]
 security/ anomaly.py ip_decode.py idn.py defang.py                                        [Prakhar]
 adversarial/ mutate.py evaluate.py        bench/ redos.py [Prakhar]  latency.py [Ishitwo]
-ml/     data_pipeline.py features.py feature_registry.py train.py calibrate.py metrics.py
-        explain.py ablation.py                                                            [Ishitwo]
+ml/     data_pipeline.py email_links.py features.py feature_registry.py train.py calibrate.py
+        metrics.py explain.py ablation.py                                                 [Ishitwo]
 api/    main.py [Amrita]  security.py [Prakhar]
 web/    React + TypeScript + Vite + Tailwind + Cytoscape.js                               [Amrita]
 tests/  test_equivalence.py test_golden_tokens.py [I]  test_flags.py test_email.py
         test_regex_parser.py test_security_modules.py [P]  test_scanner.py test_api.py [A]
 docs/   SECURITY.md CONTRIBUTIONS.md WORKLOG.md
+start.bat  RUN_GUIDE.md        one-command start on Windows, full run guide
 ```
 
 ## Data and honesty notes
 
 - **Sources:** PhishTank (verified phishing) and URLhaus (malware URLs) with timestamps, the OpenPhish community feed,
-  Tranco top sites, and Hacker News story links via the public Algolia API (real benign URLs *with paths*).
+  Tranco top sites, Hacker News story links via the public Algolia API (real benign URLs *with paths*), and links from
+  legitimate email in the Enron and SpamAssassin ham corpora (not redistributed; see [RUN_GUIDE.md](RUN_GUIDE.md)).
 - **Leakage control:** split by registered domain (no domain in two splits); the test set holds malicious domains
   *first seen* after the 80th percentile of first-seen time, so it measures detection of future campaigns.
 - **Known bias:** Tranco gives bare domains while feeds give full URLs, so "has a path" leaks the label.
