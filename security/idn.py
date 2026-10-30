@@ -122,3 +122,40 @@ def homoglyph_target(label: str) -> str | None:
     if decoded in brands():
         return None
     return _brand_skeletons().get(skeleton(decoded))
+
+
+def edit_distance(a: str, b: str, cap: int) -> int:
+    """Damerau (optimal string alignment) distance; returns cap + 1 once it exceeds ``cap``."""
+    if abs(len(a) - len(b)) > cap:
+        return cap + 1
+    prev2: list[int] = []
+    prev = list(range(len(b) + 1))
+    for i in range(1, len(a) + 1):
+        cur = [i] + [0] * len(b)
+        for j in range(1, len(b) + 1):
+            cur[j] = min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] != b[j - 1]))
+            if i > 1 and j > 1 and a[i - 1] == b[j - 2] and a[i - 2] == b[j - 1]:
+                cur[j] = min(cur[j], prev2[j - 2] + 1)  # swapped neighbours count as one edit
+        if min(cur) > cap:
+            return cap + 1
+        prev2, prev = prev, cur
+    return prev[-1]
+
+
+def typosquat_target(label: str) -> tuple[str, int] | None:
+    """(brand, distance) when ``label`` is 1-2 edits away from a brand.
+
+    shortcut: brands under 6 letters are skipped (gmail/email, adobe/abode, chase/chose are real
+    words); widen once a list of legitimate near-brand domains exists to suppress them."""
+    decoded = decode_label(label).lower()
+    if decoded in brands():
+        return None
+    best: tuple[str, int] | None = None
+    for brand in brands():
+        if len(brand) < 6:
+            continue
+        cap = 2 if len(brand) >= 8 else 1
+        d = edit_distance(decoded, brand, cap)
+        if 0 < d <= cap and (best is None or d < best[1]):
+            best = (brand, d)
+    return best

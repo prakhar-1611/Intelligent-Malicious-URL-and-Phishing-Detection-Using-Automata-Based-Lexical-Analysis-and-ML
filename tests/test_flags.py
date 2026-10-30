@@ -67,7 +67,23 @@ CASES = {
          "http://xn--pypal-4ve.com"],
         ["http://paypal.com", "http://google.com", "http://example.com", "http://paypal-help.com",
          "http://amazon.co.uk"]),
+    "S_TYPOSQUAT": (
+        ["http://pypal.com/login", "https://paypla.com", "http://gooogle.com", "http://faceboook.net",
+         "https://www.micosoft.com/", "http://instagarm.com", "http://amazom.co.uk"],
+        ["http://paypal.com", "http://google.com", "http://email.com", "http://example.com",
+         "http://pypal.example.com", "http://paypal-help.com", "http://paypa1.com", "http://apples.com"]),
 }
+
+
+def test_typosquat_does_not_change_model_features():
+    """S_TYPOSQUAT is not a model input until a retrain (lexer.rules.UNTRAINED_FLAGS)."""
+    from ml.features import FeatureExtractor
+
+    fx = FeatureExtractor()
+    assert "flag_typosquat" not in fx.names
+    x, _ = fx.extract("http://pypal.com/")
+    names = fx.names
+    assert x[names.index("n_flags_attr")] == 0 and x[names.index("flag_severity_sum")] == 0
 
 
 def codes(url):

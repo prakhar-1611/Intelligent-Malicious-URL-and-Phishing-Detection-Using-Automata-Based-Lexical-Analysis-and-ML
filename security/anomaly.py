@@ -17,6 +17,7 @@ Two sources of evidence, kept explicitly separate (Flag.source):
        S_IP_OBFUSCATED (new) integer arithmetic on decimal/hex/octal hosts
        S_OPEN_REDIRECT_PARAM (new) key allowlist + decoded value inspection
        S_HOMOGLYPH (new)     TS #39 skeleton compared with a brand list
+       S_TYPOSQUAT (Review 3) registered-domain label 1-2 edits from a brand
 
 Flags are *evidence, not verdicts*: the classifier weighs them, and the policy
 layer makes the decision.
@@ -111,10 +112,18 @@ def attribute_flags(ctx: HostContext) -> list[Flag]:
                 scripts = "+".join(sorted(idn.scripts_of(decoded)))
                 out.append(flag("S_MIXED_SCRIPT", s, e, f"{decoded} ({scripts})", "attr"))
         # homoglyph: every non-suffix label
+        homoglyph = False
         for text, s, e in ctx.labels:
             target = idn.homoglyph_target(text)
             if target:
+                homoglyph = True
                 out.append(flag("S_HOMOGLYPH", s, e, f"{idn.decode_label(text)} imitates {target}", "attr"))
+        # typosquat: registered-domain label only; a homoglyph already explains a look-alike
+        if ctx.labels and not homoglyph:
+            text, s, e = ctx.labels[-1]
+            hit = idn.typosquat_target(text)
+            if hit:
+                out.append(flag("S_TYPOSQUAT", s, e, f"{text} is {hit[1]} edit(s) from {hit[0]}", "attr"))
 
     for key, value, s, e in ctx.params:
         k = pct_decode(key).lower()

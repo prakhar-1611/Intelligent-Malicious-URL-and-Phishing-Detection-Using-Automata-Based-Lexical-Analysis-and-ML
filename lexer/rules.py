@@ -70,10 +70,17 @@ SEVERITY = {
     "S_IP_OBFUSCATED": 3,
     "S_OPEN_REDIRECT_PARAM": 2,
     "S_HOMOGLYPH": 3,
+    # new in Review 3
+    "S_TYPOSQUAT": 2,
     # email lexer
     "S_FROM_REPLYTO_MISMATCH": 2,
     "S_RETURNPATH_MISMATCH": 2,
     "S_DISPLAYNAME_SPOOF": 3,
+    # email checks, new in Review 3
+    "S_AUTH_FAIL": 2,
+    "S_LOOKALIKE_SENDER": 3,
+    "S_LINK_MISMATCH": 3,
+    "S_RISKY_ATTACHMENT": 3,
 }
 
 FLAG_DESCRIPTIONS = {
@@ -90,15 +97,25 @@ FLAG_DESCRIPTIONS = {
     "S_IP_OBFUSCATED": "IPv4 host written in decimal, hex or octal form.",
     "S_OPEN_REDIRECT_PARAM": "Query parameter like url= / next= carries an embedded URL.",
     "S_HOMOGLYPH": "Domain's confusables skeleton equals a well-known brand.",
+    "S_TYPOSQUAT": "Registered domain is one or two typing edits away from a well-known brand.",
     "S_FROM_REPLYTO_MISMATCH": "From and Reply-To use different domains.",
     "S_RETURNPATH_MISMATCH": "From and Return-Path use different domains.",
     "S_DISPLAYNAME_SPOOF": "Display name claims a brand or address the sender domain doesn't match.",
+    "S_AUTH_FAIL": "Authentication-Results reports an SPF, DKIM or DMARC failure.",
+    "S_LOOKALIKE_SENDER": "Sender's registered domain imitates a well-known brand.",
+    "S_LINK_MISMATCH": "An HTML link shows one domain but points to another.",
+    "S_RISKY_ATTACHMENT": "Attachment with an executable or script extension.",
 }
+EMAIL_FLAGS = {"S_FROM_REPLYTO_MISMATCH", "S_RETURNPATH_MISMATCH", "S_DISPLAYNAME_SPOOF", "S_AUTH_FAIL",
+               "S_LOOKALIKE_SENDER", "S_LINK_MISMATCH", "S_RISKY_ATTACHMENT"}
 
 DFA_FLAGS = {"S_PUNY_DETECT", "S_PCT_ENCODE", "S_IP_HOST", "S_AT_ABUSE",
              "S_REDIRECT_ABUSE", "S_CONTROL_ANOMALY", "S_DOUBLE_ENCODE"}
 ATTR_FLAGS = {"S_PORT_ANOMALY", "S_SUBDOMAIN_DEPTH", "S_MIXED_SCRIPT", "S_IP_OBFUSCATED",
-              "S_OPEN_REDIRECT_PARAM", "S_HOMOGLYPH"}
+              "S_OPEN_REDIRECT_PARAM", "S_HOMOGLYPH", "S_TYPOSQUAT"}
+# shortcut: the saved model predates these flags, so ml/features.py ignores them; empty this set
+# and retrain (python -m ml.train) to make them model inputs
+UNTRAINED_FLAGS = {"S_TYPOSQUAT"}
 
 
 @dataclass(frozen=True)

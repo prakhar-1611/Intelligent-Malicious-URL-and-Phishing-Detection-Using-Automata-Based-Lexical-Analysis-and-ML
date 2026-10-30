@@ -7,7 +7,9 @@ Author: Amrita Bhatia (24BCI0215)   (hardening: Prakhar Tandon, see api/security
 Endpoints
     POST /analyze            {url}        -> verdict, score, tokens, flags, trace, steps, explanation[]
     POST /analyze/batch      {urls: [..]} -> one summary row per URL
-    POST /analyze/email      {raw}        -> header tokens, address checks, flags, scanned body URLs
+    POST /analyze/email      {raw}        -> header tokens, address checks, MIME part tree, HTML links,
+                                             flags, scanned body URLs, combined verdict with its rule
+    GET  /samples/emails                  -> the demo .eml files in data/samples/emails
     GET  /automata                        -> available rules / examples / modes
     GET  /automata/{rule}?stage=nfa|dfa|min
     POST /automata/custom    {pattern, stage}
@@ -34,9 +36,9 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from api import security as sec
-from lexer.email_lexer import scan_email
+from lexer.email_lexer import EmailScanResult, combine_verdict, registered_domain, same_org, scan_email
 from lexer.export import automaton_view, custom_pattern_view, list_automata
-from lexer.rules import FLAG_DESCRIPTIONS
+from lexer.rules import EMAIL_FLAGS, FLAG_DESCRIPTIONS, RULES, SEVERITY
 from lexer.scanner import get_scanner
 from ml.calibrate import DEFAULT_THRESHOLDS, verdict
 from security.defang import defang
@@ -44,6 +46,7 @@ from security.defang import defang
 ROOT = Path(__file__).resolve().parent.parent
 ART = ROOT / "artifacts"
 RESULTS = ART / "results"
+SAMPLE_EMAILS = ROOT / "data" / "samples" / "emails"
 
 app = FastAPI(title="Automata-based Phishing URL Detector", version="2.0.0",
               description="BCSE307P Compiler Design Lab project, VIT Vellore")
@@ -95,6 +98,40 @@ class Engine:
             self.bundle = None
         self.explainer = Explainer(self.bundle, self.fx) if self.bundle else None
         self.thresholds = self.bundle["thresholds"] if self.bundle else DEFAULT_THRESHOLDS
+        # second opinion for links inside emails: the scheme+host model (train.py --domain-only)
+        self.dom_bundle, self.dom_fx = None, None
+        dpath = ART / "model_domain_only.joblib"
+        if self.bundle and dpath.exists():
+            try:
+                b = joblib.load(dpath)
+                cp = Path(b["corpus_path"])
+                fx = FeatureExtractor(self.scanner, CorpusSymbolTable.load(cp) if cp.exists() else None)
+                if b["feature_names"] == fx.names:
+                    self.dom_bundle, self.dom_fx = b, fx
+            except Exception as e:
+                print("domain-only model not loaded:", e)
+
+    def email_link(self, url: str, first_party: str = "") -> dict:
+        """Verdict for a link inside an email. Tracking links are long and percent-encoded, which the
+        full-URL model reads as obfuscation, so a full-model verdict stands only when the domain-only
+        model finds the host risky too or a strong (severity >= 2) flag fires; otherwise the link
+        takes the domain-only verdict. ``first_party``: the registered domain of a DMARC-verified
+        sender; its own links are as trustworthy as the sender itself."""
+        a = self.analyze(url, detail=False)
+        if first_party and same_org(a["registered_domain"].lower(), first_party):
+            return a | {"verdict": "Safe", "basis": "first-party link of a DMARC-verified sender"}
+        if not self.dom_bundle or a["verdict"] == "Safe":
+            return a | {"basis": "full URL"}
+        from ml.train import domain_only
+
+        x, _ = self.dom_fx.extract(domain_only(url))
+        raw = self.dom_bundle["model"].predict_proba(x[None])[:, 1]
+        d = float(self.dom_bundle["calibrator"].transform(raw)[0])
+        dth = self.dom_bundle["thresholds"]
+        if d >= dth["suspicious"] or any(f["severity"] >= 2 for f in a["flags"]):
+            return a | {"basis": "full URL, confirmed by host or flag", "host_score": round(d, 4)}
+        return a | {"verdict": verdict(d, dth), "basis": "host only (path not trusted alone)",
+                    "host_score": round(d, 4)}
 
     @property
     def model_name(self) -> str:
@@ -161,7 +198,8 @@ def _limit(rate: str):
 def health() -> dict:
     e = engine()
     return {"status": "ok", "model": e.model_name, "dfa_states": e.scanner.total_states,
-            "modes": e.scanner.tables["mode_order"], "features": len(e.fx.names)}
+            "modes": e.scanner.tables["mode_order"], "features": len(e.fx.names), "rules": len(RULES),
+            "url_flags": sum(1 for c in SEVERITY if c not in EMAIL_FLAGS)}
 
 
 @app.post("/analyze")
@@ -191,18 +229,28 @@ def analyze_batch(req: BatchRequest, request: Request) -> dict:
 @app.post("/analyze/email")
 @_limit("20/minute")
 def analyze_email(req: EmailRequest, request: Request) -> dict:
-    res = scan_email(req.raw)
+    res: EmailScanResult = scan_email(req.raw)
     out = res.to_dict()
+    authenticated = res.auth_results.get("dmarc") == "pass"
+    sender = registered_domain(res.addresses["from"]["domain"]) if authenticated else ""
     for u in out["urls"]:
-        a = engine().analyze(u["url"][:sec.MAX_URL_LEN], detail=False)
-        u.update({"url_defanged": a["url_defanged"], "verdict": a["verdict"], "score": a["score"]})
+        a = engine().email_link(u["url"][:sec.MAX_URL_LEN], first_party=sender)
+        u.update({k: a[k] for k in ("url_defanged", "verdict", "score", "basis")})
         u.pop("url")
-    flags = [f["code"] for f in out["flags"]]
-    worst = max((u["score"] for u in out["urls"]), default=0.0)
-    out["summary"] = {"header_flags": flags, "max_url_score": worst,
-                      "verdict": "Malicious" if worst >= engine().thresholds["malicious"] else
-                      "Suspicious" if flags or worst >= engine().thresholds["suspicious"] else "Safe"}
+    for f in out["flags"]:
+        f["description"] = FLAG_DESCRIPTIONS.get(f["code"], "")
+    body = {"S_LINK_MISMATCH", "S_RISKY_ATTACHMENT"}
+    out["summary"] = combine_verdict(res.flags, [u["score"] for u in out["urls"]], engine().thresholds,
+                                     authenticated=authenticated,
+                                     url_verdicts=[u["verdict"] for u in out["urls"]]) | {
+        "header_flags": [f.code for f in res.flags if f.code not in body],
+        "body_flags": [f.code for f in res.flags if f.code in body]}
     return out
+
+
+@app.get("/samples/emails")
+def sample_emails() -> dict:
+    return {p.stem: p.read_text(encoding="utf-8") for p in sorted(SAMPLE_EMAILS.glob("*.eml"))}
 
 
 @app.get("/automata")

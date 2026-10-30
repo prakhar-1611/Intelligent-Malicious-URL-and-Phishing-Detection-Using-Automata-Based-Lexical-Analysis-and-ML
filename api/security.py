@@ -2,7 +2,7 @@
 
 Author: Prakhar Tandon (24BCI0222)
 
-* Input caps: URL <= 2048 chars, batch <= 500 URLs, email <= 100 kB (Pydantic models in main.py)
+* Input caps: URL <= 2048 chars, batch <= 500 URLs, email <= 1 MB (Pydantic models in main.py)
 * Rate limiting: slowapi (per client IP), configurable with RATE_LIMIT, default 60/minute
 * CORS allowlist: ALLOWED_ORIGINS (comma-separated), default the local Vite dev server
 * Security headers on every response (nosniff, frame deny, strict CSP, no referrer)
@@ -31,7 +31,7 @@ LOG_DIR = ROOT / "artifacts" / "logs"
 
 MAX_URL_LEN = 2048
 MAX_BATCH = 500
-MAX_EMAIL_BYTES = 100_000
+MAX_EMAIL_BYTES = 1_000_000  # real HTML mail is often 100-500 kB
 RATE_LIMIT = os.environ.get("RATE_LIMIT", "60/minute")
 ALLOWED_ORIGINS = [o.strip() for o in os.environ.get(
     "ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if o.strip()]

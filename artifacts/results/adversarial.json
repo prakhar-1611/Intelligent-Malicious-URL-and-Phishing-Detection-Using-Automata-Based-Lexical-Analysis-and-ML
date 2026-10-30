@@ -1,7 +1,7 @@
 {
   "n_urls": 1000,
   "seed": 7,
-  "model": "lightgbm",
+  "model": "xgboost",
   "rows": [
     {
       "operator": "percent_encoding",
@@ -11,9 +11,9 @@
       "of": 1000,
       "flag_recall": 1.0,
       "flag_present_before": 0.004,
-      "detected_before": 973,
+      "detected_before": 975,
       "evasion_rate": 0.0308,
-      "mean_score_delta": -0.0113
+      "mean_score_delta": -0.0253
     },
     {
       "operator": "double_encoding",
@@ -23,9 +23,9 @@
       "of": 1000,
       "flag_recall": 1.0,
       "flag_present_before": 0.0,
-      "detected_before": 973,
-      "evasion_rate": 0.0092,
-      "mean_score_delta": 0.0109
+      "detected_before": 975,
+      "evasion_rate": 0.0195,
+      "mean_score_delta": 0.002
     },
     {
       "operator": "homoglyph_swap",
@@ -35,9 +35,9 @@
       "of": 1000,
       "flag_recall": 0.936,
       "flag_present_before": 0.0,
-      "detected_before": 817,
+      "detected_before": 819,
       "evasion_rate": 0.0,
-      "mean_score_delta": 0.0074
+      "mean_score_delta": 0.0183
     },
     {
       "operator": "punycode",
@@ -47,9 +47,9 @@
       "of": 1000,
       "flag_recall": 1.0,
       "flag_present_before": 0.0,
-      "detected_before": 817,
-      "evasion_rate": 0.0037,
-      "mean_score_delta": 0.0067
+      "detected_before": 819,
+      "evasion_rate": 0.0012,
+      "mean_score_delta": 0.0354
     },
     {
       "operator": "subdomain_insertion",
@@ -59,9 +59,9 @@
       "of": 1000,
       "flag_recall": 1.0,
       "flag_present_before": 0.0,
-      "detected_before": 973,
+      "detected_before": 975,
       "evasion_rate": 0.0,
-      "mean_score_delta": 0.0375
+      "mean_score_delta": 0.0482
     },
     {
       "operator": "at_injection",
@@ -71,9 +71,9 @@
       "of": 1000,
       "flag_recall": 1.0,
       "flag_present_before": 0.0,
-      "detected_before": 973,
+      "detected_before": 975,
       "evasion_rate": 0.0,
-      "mean_score_delta": 0.0266
+      "mean_score_delta": 0.0339
     },
     {
       "operator": "ip_form",
@@ -83,9 +83,9 @@
       "of": 1000,
       "flag_recall": 1.0,
       "flag_present_before": 0.0,
-      "detected_before": 973,
-      "evasion_rate": 0.0,
-      "mean_score_delta": 0.0167
+      "detected_before": 975,
+      "evasion_rate": 0.0492,
+      "mean_score_delta": -0.06
     },
     {
       "operator": "port_insertion",
@@ -95,9 +95,9 @@
       "of": 1000,
       "flag_recall": 1.0,
       "flag_present_before": 0.0,
-      "detected_before": 852,
-      "evasion_rate": 0.0012,
-      "mean_score_delta": 0.0234
+      "detected_before": 854,
+      "evasion_rate": 0.0,
+      "mean_score_delta": 0.0368
     },
     {
       "operator": "case_toggle",
@@ -106,9 +106,9 @@
       "applied": 850,
       "of": 1000,
       "flag_recall": null,
-      "detected_before": 823,
+      "detected_before": 825,
       "evasion_rate": 0.0,
-      "mean_score_delta": 0.0311
+      "mean_score_delta": 0.0276
     },
     {
       "operator": "dslash_injection",
@@ -118,7 +118,7 @@
       "of": 1000,
       "flag_recall": 1.0,
       "flag_present_before": 0.0,
-      "detected_before": 973,
+      "detected_before": 975,
       "evasion_rate": 0.0,
       "mean_score_delta": 0.0144
     }

@@ -6,7 +6,8 @@ export PYTHONIOENCODING=utf-8
 
 python -m lexer.build_automata
 python -m lexer.export
-python -m ml.data_pipeline --download --tranco-top 60000
+python -m ml.email_links --enron-sample 100000     # benign links from legitimate mail (Enron + SpamAssassin ham in data/raw/email_ham/)
+python -m ml.data_pipeline --download --tranco-top 60000 --benign-urls data/raw/email_ham_urls.txt
 python -m ml.train
 python -m ml.train --domain-only
 python -m ml.ablation

@@ -16,6 +16,7 @@ client = TestClient(app)
 def test_health():
     r = client.get("/health")
     assert r.status_code == 200 and r.json()["status"] == "ok"
+    assert r.json()["rules"] == 23 and r.json()["url_flags"] == 14  # shown on the dashboard's How it works
 
 
 def test_analyze_contract():
@@ -75,3 +76,25 @@ def test_security_headers_and_no_fetch():
 
 def test_figure_path_traversal_blocked():
     assert client.get("/results/figures/..%2F..%2Fapi%2Fmain.py").status_code in (400, 404)
+
+
+def test_email_endpoint_explains_combined_verdict():
+    samples = client.get("/samples/emails").json()
+    assert set(samples) == {"benign_folded", "spoofed_paypal"}
+    body = client.post("/analyze/email", json={"raw": samples["spoofed_paypal"]}).json()
+    s = body["summary"]
+    assert s["verdict"] == "Phishing" and s["rule"] and s["deciding_rule"]
+    assert {"S_LINK_MISMATCH", "S_RISKY_ATTACHMENT"} == set(s["body_flags"])
+    assert {r["code"] for r in s["reasons"]} == set(s["header_flags"]) | set(s["body_flags"])
+    assert body["mime"]["children"] and all(link["href"].startswith("hxxp") for link in body["links"])
+    assert all(f["description"] for f in body["flags"])
+
+
+def test_email_first_party_links_of_verified_sender_are_safe():
+    raw = ("Authentication-Results: mx; spf=pass; dkim=pass; dmarc=pass\nFrom: News <news@shop.com>\n"
+           "Content-Type: text/plain\n\nhttps://click.shop.com/AbC123xYz%2F%3Fq%3D1/track?u=Zm9vYmFy&id=99887766")
+    j = client.post("/analyze/email", json={"raw": raw}).json()
+    assert j["urls"][0]["verdict"] == "Safe" and "first-party" in j["urls"][0]["basis"]
+    # the same link from an unverified sender keeps the normal checks
+    j2 = client.post("/analyze/email", json={"raw": raw.replace("dmarc=pass", "dmarc=fail")}).json()
+    assert "first-party" not in j2["urls"][0]["basis"]

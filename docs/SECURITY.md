@@ -16,7 +16,7 @@ The detector handles attacker-controlled input by design, so it has to be safe t
 
 ## API hardening
 
-* **Input caps** (Pydantic): URL ≤ 2048 characters, batch ≤ 500 URLs, email ≤ 100 kB, custom regex ≤ 120 characters.
+* **Input caps** (Pydantic): URL ≤ 2048 characters, batch ≤ 500 URLs, email ≤ 1 MB, custom regex ≤ 120 characters.
 * **Construction blow-up guard**: user-typed regexes in the Automata Lab stop at 400 DFA / 600 NFA states (`StateExplosion`).
 * **Rate limiting**: slowapi, `RATE_LIMIT` (default `60/minute`) per client, tighter on batch, email and custom-regex routes.
 * **CORS allowlist**: `ALLOWED_ORIGINS` (default the local Vite dev server only), GET/POST only, no credentials.

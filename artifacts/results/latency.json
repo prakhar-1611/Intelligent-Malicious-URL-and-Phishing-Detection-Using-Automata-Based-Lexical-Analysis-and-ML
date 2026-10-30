@@ -1,73 +1,73 @@
 {
   "n_urls": 1000,
-  "model": "lightgbm",
+  "model": "xgboost",
   "lexing": {
-    "mean_ms": 0.2176,
-    "p50_ms": 0.18,
-    "p95_ms": 0.3628,
-    "max_ms": 0.7514
+    "mean_ms": 0.3371,
+    "p50_ms": 0.3415,
+    "p95_ms": 0.52,
+    "max_ms": 2.8955
   },
   "features": {
-    "mean_ms": 0.2032,
-    "p50_ms": 0.1801,
-    "p95_ms": 0.2971,
-    "max_ms": 2.1931
+    "mean_ms": 0.2223,
+    "p50_ms": 0.2106,
+    "p95_ms": 0.3327,
+    "max_ms": 0.4901
   },
   "inference": {
-    "mean_ms": 1.2393,
-    "p50_ms": 1.1688,
-    "p95_ms": 1.6752,
-    "max_ms": 8.1504
+    "mean_ms": 0.9189,
+    "p50_ms": 0.9005,
+    "p95_ms": 1.33,
+    "max_ms": 10.1975
   },
   "total": {
-    "mean_ms": 1.6602,
-    "p50_ms": 1.5919,
-    "p95_ms": 2.1991,
-    "max_ms": 9.0259
+    "mean_ms": 1.4783,
+    "p50_ms": 1.4389,
+    "p95_ms": 2.0358,
+    "max_ms": 11.1727
   },
   "scaling": [
     {
       "n": 120,
-      "seconds": 9.939982555806637e-05,
-      "us_per_char": 0.8283,
+      "seconds": 0.00010969996219500899,
+      "us_per_char": 0.9142,
       "transitions": 129,
       "backtracked": 0
     },
     {
       "n": 1020,
-      "seconds": 0.000919699901714921,
-      "us_per_char": 0.9017,
+      "seconds": 0.0010550000006332994,
+      "us_per_char": 1.0343,
       "transitions": 1168,
       "backtracked": 0
     },
     {
       "n": 5020,
-      "seconds": 0.0046190000139176846,
-      "us_per_char": 0.9201,
+      "seconds": 0.006037799990735948,
+      "us_per_char": 1.2027,
       "transitions": 5657,
       "backtracked": 0
     },
     {
       "n": 10020,
-      "seconds": 0.010361599968746305,
-      "us_per_char": 1.0341,
+      "seconds": 0.012613800005055964,
+      "us_per_char": 1.2589,
       "transitions": 11328,
       "backtracked": 0
     },
     {
       "n": 50020,
-      "seconds": 0.036836399929597974,
-      "us_per_char": 0.7364,
+      "seconds": 0.06323349999729544,
+      "us_per_char": 1.2642,
       "transitions": 56701,
       "backtracked": 0
     },
     {
       "n": 100020,
-      "seconds": 0.07434249995276332,
-      "us_per_char": 0.7433,
+      "seconds": 0.12438860000111163,
+      "us_per_char": 1.2436,
       "transitions": 113512,
       "backtracked": 0
     }
   ],
-  "linear_fit_r2": 0.99853
+  "linear_fit_r2": 0.99992
 }

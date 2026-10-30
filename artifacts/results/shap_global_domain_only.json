@@ -3,136 +3,136 @@
   "rows": 2000,
   "top_features": [
     {
-      "feature": "auto_visit_g3",
-      "group": "automata",
-      "mean_abs_shap": 0.74869
+      "feature": "avg_token_len",
+      "group": "lexical",
+      "mean_abs_shap": 0.77328
     },
     {
       "feature": "base_label_rarity",
       "group": "symtab",
-      "mean_abs_shap": 0.55298
+      "mean_abs_shap": 0.54481
     },
     {
       "feature": "n_digits",
       "group": "lexical",
-      "mean_abs_shap": 0.4871
-    },
-    {
-      "feature": "avg_token_len",
-      "group": "lexical",
-      "mean_abs_shap": 0.37742
+      "mean_abs_shap": 0.52073
     },
     {
       "feature": "tld_len",
       "group": "domain",
-      "mean_abs_shap": 0.3166
+      "mean_abs_shap": 0.32318
     },
     {
       "feature": "tld_category",
       "group": "domain",
-      "mean_abs_shap": 0.24721
-    },
-    {
-      "feature": "www_prefix",
-      "group": "domain",
-      "mean_abs_shap": 0.23401
+      "mean_abs_shap": 0.29115
     },
     {
       "feature": "mean_label_rarity",
       "group": "symtab",
-      "mean_abs_shap": 0.20762
+      "mean_abs_shap": 0.28866
     },
     {
-      "feature": "url_len",
-      "group": "lexical",
-      "mean_abs_shap": 0.20418
+      "feature": "auto_visit_g3",
+      "group": "automata",
+      "mean_abs_shap": 0.25238
+    },
+    {
+      "feature": "www_prefix",
+      "group": "domain",
+      "mean_abs_shap": 0.22156
     },
     {
       "feature": "n_delims",
       "group": "lexical",
-      "mean_abs_shap": 0.19466
+      "mean_abs_shap": 0.19281
     },
     {
-      "feature": "digit_ratio",
+      "feature": "url_len",
       "group": "lexical",
-      "mean_abs_shap": 0.14869
+      "mean_abs_shap": 0.17318
     },
     {
       "feature": "n_digits_host",
       "group": "domain",
-      "mean_abs_shap": 0.14762
+      "mean_abs_shap": 0.16904
+    },
+    {
+      "feature": "digit_ratio",
+      "group": "lexical",
+      "mean_abs_shap": 0.15535
     },
     {
       "feature": "auto_visit_g53",
       "group": "automata",
-      "mean_abs_shap": 0.12162
-    },
-    {
-      "feature": "host_len",
-      "group": "domain",
-      "mean_abs_shap": 0.11412
+      "mean_abs_shap": 0.12067
     },
     {
       "feature": "entropy",
       "group": "lexical",
-      "mean_abs_shap": 0.10056
+      "mean_abs_shap": 0.11917
     },
     {
       "feature": "n_labels",
       "group": "domain",
-      "mean_abs_shap": 0.09438
-    },
-    {
-      "feature": "letter_ratio",
-      "group": "lexical",
-      "mean_abs_shap": 0.06817
+      "mean_abs_shap": 0.10601
     },
     {
       "feature": "n_flags_attr",
       "group": "automata",
-      "mean_abs_shap": 0.06787
-    },
-    {
-      "feature": "n_tokens",
-      "group": "lexical",
-      "mean_abs_shap": 0.06723
-    },
-    {
-      "feature": "n_distinct_states",
-      "group": "automata",
-      "mean_abs_shap": 0.06591
-    },
-    {
-      "feature": "base_len",
-      "group": "domain",
-      "mean_abs_shap": 0.05885
-    },
-    {
-      "feature": "n_hyphens_host",
-      "group": "domain",
-      "mean_abs_shap": 0.04732
-    },
-    {
-      "feature": "n_sus_words",
-      "group": "lexical",
-      "mean_abs_shap": 0.04087
-    },
-    {
-      "feature": "auto_visit_g51",
-      "group": "automata",
-      "mean_abs_shap": 0.04004
+      "mean_abs_shap": 0.08887
     },
     {
       "feature": "auto_visit_g10",
       "group": "automata",
-      "mean_abs_shap": 0.03848
+      "mean_abs_shap": 0.08811
+    },
+    {
+      "feature": "transition_entropy",
+      "group": "automata",
+      "mean_abs_shap": 0.07374
+    },
+    {
+      "feature": "n_tokens",
+      "group": "lexical",
+      "mean_abs_shap": 0.07101
+    },
+    {
+      "feature": "base_len",
+      "group": "domain",
+      "mean_abs_shap": 0.05923
+    },
+    {
+      "feature": "n_distinct_states",
+      "group": "automata",
+      "mean_abs_shap": 0.05458
+    },
+    {
+      "feature": "is_https",
+      "group": "lexical",
+      "mean_abs_shap": 0.05283
+    },
+    {
+      "feature": "auto_visit_g39",
+      "group": "automata",
+      "mean_abs_shap": 0.05258
+    },
+    {
+      "feature": "letter_ratio",
+      "group": "lexical",
+      "mean_abs_shap": 0.04958
+    },
+    {
+      "feature": "flag_port_anomaly",
+      "group": "automata",
+      "mean_abs_shap": 0.0481
     }
   ],
   "group_share": {
-    "lexical": 0.3403,
-    "domain": 0.2552,
-    "automata": 0.2483,
-    "symtab": 0.1562,
+    "lexical": 0.415,
+    "domain": 0.2439,
+    "automata": 0.1771,
+    "symtab": 0.164,
     "encoding": 0.0,
     "path_query": 0.0
   }

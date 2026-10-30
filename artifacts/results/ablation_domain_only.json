@@ -8,23 +8,23 @@
         "lexical"
       ],
       "n_features": 14,
-      "cv_pr_auc_mean": 0.9312,
+      "cv_pr_auc_mean": 0.9281,
       "cv_pr_auc_std": 0.0154,
       "test": {
         "threshold": 0.5,
-        "precision": 0.9165,
-        "recall": 0.7199,
-        "f1": 0.8064,
-        "fpr": 0.0317,
-        "roc_auc": 0.9113,
-        "pr_auc": 0.8954,
+        "precision": 0.9117,
+        "recall": 0.7109,
+        "f1": 0.7989,
+        "fpr": 0.0308,
+        "roc_auc": 0.9162,
+        "pr_auc": 0.8932,
         "confusion": {
-          "tn": 14432,
-          "fp": 472,
-          "fn": 2015,
-          "tp": 5179
+          "tn": 15599,
+          "fp": 495,
+          "fn": 2080,
+          "tp": 5114
         },
-        "n": 22098,
+        "n": 23288,
         "positives": 7194
       }
     },
@@ -35,23 +35,23 @@
         "domain"
       ],
       "n_features": 28,
-      "cv_pr_auc_mean": 0.9528,
-      "cv_pr_auc_std": 0.0091,
+      "cv_pr_auc_mean": 0.9497,
+      "cv_pr_auc_std": 0.01,
       "test": {
         "threshold": 0.5,
-        "precision": 0.94,
-        "recall": 0.7595,
-        "f1": 0.8402,
-        "fpr": 0.0234,
-        "roc_auc": 0.9388,
-        "pr_auc": 0.9234,
+        "precision": 0.9358,
+        "recall": 0.7563,
+        "f1": 0.8366,
+        "fpr": 0.0232,
+        "roc_auc": 0.941,
+        "pr_auc": 0.9206,
         "confusion": {
-          "tn": 14555,
-          "fp": 349,
-          "fn": 1730,
-          "tp": 5464
+          "tn": 15721,
+          "fp": 373,
+          "fn": 1753,
+          "tp": 5441
         },
-        "n": 22098,
+        "n": 23288,
         "positives": 7194
       }
     },
@@ -63,23 +63,23 @@
         "automata"
       ],
       "n_features": 161,
-      "cv_pr_auc_mean": 0.9528,
-      "cv_pr_auc_std": 0.0095,
+      "cv_pr_auc_mean": 0.9502,
+      "cv_pr_auc_std": 0.0101,
       "test": {
         "threshold": 0.5,
-        "precision": 0.9404,
-        "recall": 0.7549,
-        "f1": 0.8375,
+        "precision": 0.9357,
+        "recall": 0.7522,
+        "f1": 0.8339,
         "fpr": 0.0231,
-        "roc_auc": 0.9384,
-        "pr_auc": 0.9232,
+        "roc_auc": 0.9405,
+        "pr_auc": 0.92,
         "confusion": {
-          "tn": 14560,
-          "fp": 344,
-          "fn": 1763,
-          "tp": 5431
+          "tn": 15722,
+          "fp": 372,
+          "fn": 1783,
+          "tp": 5411
         },
-        "n": 22098,
+        "n": 23288,
         "positives": 7194
       }
     },
@@ -94,23 +94,23 @@
         "symtab"
       ],
       "n_features": 187,
-      "cv_pr_auc_mean": 0.925,
-      "cv_pr_auc_std": 0.0488,
+      "cv_pr_auc_mean": 0.9276,
+      "cv_pr_auc_std": 0.0455,
       "test": {
         "threshold": 0.5,
-        "precision": 0.9386,
-        "recall": 0.7433,
-        "f1": 0.8296,
-        "fpr": 0.0235,
-        "roc_auc": 0.9376,
-        "pr_auc": 0.9222,
+        "precision": 0.9377,
+        "recall": 0.7408,
+        "f1": 0.8277,
+        "fpr": 0.022,
+        "roc_auc": 0.9417,
+        "pr_auc": 0.9211,
         "confusion": {
-          "tn": 14554,
-          "fp": 350,
-          "fn": 1847,
-          "tp": 5347
+          "tn": 15740,
+          "fp": 354,
+          "fn": 1865,
+          "tp": 5329
         },
-        "n": 22098,
+        "n": 23288,
         "positives": 7194
       }
     }

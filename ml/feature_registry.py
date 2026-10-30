@@ -78,7 +78,7 @@ def evidence(spec: FeatureSpec, scan: ScanResult, text: str) -> dict:
 
 
 def build_registry(state_meta: list[dict]) -> list[FeatureSpec]:
-    from lexer.rules import SEVERITY
+    from lexer.rules import EMAIL_FLAGS, SEVERITY, UNTRAINED_FLAGS
 
     S = FeatureSpec
     host_tokens = ("SUBDOMAIN", "BASE_DOMAIN", "TLD", "IP_HOST")
@@ -137,8 +137,7 @@ def build_registry(state_meta: list[dict]) -> list[FeatureSpec]:
         S("flag_severity_sum", "automata", "Sum of flag severities"),
     ]
     for code in SEVERITY:
-        if code.startswith("S_") and code not in ("S_FROM_REPLYTO_MISMATCH", "S_RETURNPATH_MISMATCH",
-                                                  "S_DISPLAYNAME_SPOOF"):
+        if code.startswith("S_") and code not in EMAIL_FLAGS | UNTRAINED_FLAGS:
             reg.append(S("flag_" + code[2:].lower(), "automata", f"Flag {code} raised", flags=(code,)))
     reg += [
         # ---------------- path / query

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
-import { Card, ErrorBox, FlagList, HighlightedUrl, TokenChips, UrlInput, VerdictCard } from "../components/common";
+import { Card, DemoGrid, ErrorBox, FlagList, HighlightedUrl, HowItWorks, PageHeader, TokenChips, UrlInput, VerdictCard } from "../components/common";
 import { useAnalysis } from "../state";
 
 export default function Analyze() {
@@ -23,15 +23,25 @@ export default function Analyze() {
   }
 
   return (
-    <div className="space-y-4">
-      <Card title="Analyse a URL">
+    <div className="space-y-5">
+      <PageHeader title="Analyse a link"
+        subtitle="Paste any URL. The custom lexer reads it with minimal DFAs, raises security flags, and the model returns a calibrated verdict with reasons." />
+      <Card>
         <UrlInput onSubmit={run} busy={busy} initial={a?.input ?? ""} />
       </Card>
       <ErrorBox error={error} />
+      {!a && (
+        <>
+          <Card title="How it works"><HowItWorks /></Card>
+          <Card title="Try an example" right={<span className="text-xs text-slate-500">one click analyses it · nothing is opened</span>}>
+            <DemoGrid onPick={run} />
+          </Card>
+        </>
+      )}
       {a && (
         <>
           <Card><VerdictCard a={a} /></Card>
-          <div className="grid lg:grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 gap-4 items-start">
             <Card title="Token stream" right={<span className="text-xs text-slate-500">hover a chip for type and position</span>}>
               <TokenChips tokens={a.tokens} />
               <div className="mt-3 text-xs text-slate-500">
@@ -44,7 +54,7 @@ export default function Analyze() {
               <div className="mt-3"><FlagList flags={a.flags} /></div>
             </Card>
           </div>
-          <div className="grid lg:grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 gap-4 items-start">
             <Card title="Why? (top contributions)" right={
               <button className="text-sm text-indigo-600 hover:underline" onClick={() => nav("/explain")}>Open Explain →</button>}>
               <ul className="text-sm space-y-1">
@@ -60,15 +70,15 @@ export default function Analyze() {
             </Card>
             <Card title="Symbol table" right={<span className="text-xs text-slate-500">
               {a.symtab.size} symbols · {a.symtab.buckets} buckets · longest chain {a.symtab.max_chain}</span>}>
-              <div className="max-h-56 overflow-auto">
-                <table className="w-full text-xs">
-                  <thead className="text-slate-500"><tr><th className="text-left">lexeme</th><th>kind</th><th>freq</th><th>pos</th><th>flags</th></tr></thead>
+              <div className="max-h-64 overflow-auto">
+                <table className="w-full text-[13px]">
+                  <thead className="text-slate-500 bg-white sticky top-0 border-b border-slate-200"><tr><th className="text-left font-normal px-2 py-1.5">lexeme</th><th className="font-normal text-left px-2">kind</th><th className="font-normal text-right px-2">freq</th><th className="font-normal text-right px-2">pos</th><th className="font-normal text-left px-2">flags</th></tr></thead>
                   <tbody>
                     {a.symtab.symbols.map((s: any, i: number) => (
-                      <tr key={i} className="border-t">
-                        <td className="font-mono break-all">{s.lexeme}</td><td className="text-center">{s.kind}</td>
-                        <td className="text-center">{s.freq}</td><td className="text-center">{s.first}</td>
-                        <td className="text-rose-600">{s.flags.join(", ")}</td>
+                      <tr key={i} className="border-t border-slate-100 align-top">
+                        <td className="font-mono break-all px-2 py-1">{s.lexeme}</td><td className="px-2 py-1 text-slate-600">{s.kind}</td>
+                        <td className="px-2 py-1 text-right tabular-nums">{s.freq}</td><td className="px-2 py-1 text-right tabular-nums">{s.first}</td>
+                        <td className="px-2 py-1 text-rose-700 break-words">{s.flags.join(", ")}</td>
                       </tr>
                     ))}
                   </tbody>

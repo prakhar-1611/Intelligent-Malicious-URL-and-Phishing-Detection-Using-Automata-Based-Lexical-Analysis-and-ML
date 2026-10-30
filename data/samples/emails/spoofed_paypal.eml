@@ -6,6 +6,17 @@ Reply-To: support@collector.example.net
 Return-Path: <bounce@bulk-mailer.example.org>
 Subject: Your account has been limited
 Authentication-Results: mx.example.org; spf=fail smtp.mailfrom=bulk-mailer.example.org; dkim=none; dmarc=fail
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="mix-0001"
+
+This is a multi-part message in MIME format.
+
+--mix-0001
+Content-Type: multipart/alternative; boundary="alt-0001"
+
+--alt-0001
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
 Dear customer,
 
@@ -14,3 +25,20 @@ https://paypal.com@paypa1-security.example/verify?next=https%3A%2F%2Fevil.exampl
 or http://3232235777/login
 
 PayPal
+--alt-0001
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<p>Dear customer,</p>
+<p>Please verify your account within 24 hours:
+<a href=3D"http://3232235777/login">https://www.paypal.com/signin</a></p>
+<p>PayPal</p>
+--alt-0001--
+
+--mix-0001
+Content-Type: application/octet-stream; name="Invoice-2026.pdf.exe"
+Content-Disposition: attachment; filename="Invoice-2026.pdf.exe"
+Content-Transfer-Encoding: base64
+
+UGxhY2Vob2xkZXIgYnl0ZXMgZm9yIHRoZSBSZXZpZXcgMyBkZW1vLiBOb3QgYSBwcm9ncmFtLgo=
+--mix-0001--

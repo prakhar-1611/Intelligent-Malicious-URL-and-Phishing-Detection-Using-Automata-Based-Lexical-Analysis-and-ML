@@ -17,9 +17,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 6,
-      "ms_thompson": 0.055,
-      "ms_subset": 0.145,
-      "ms_hopcroft": 0.249
+      "ms_thompson": 0.058,
+      "ms_subset": 0.496,
+      "ms_hopcroft": 0.28
     },
     {
       "rule": "SCHEME_OPAQUE",
@@ -38,9 +38,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 18,
-      "ms_thompson": 0.151,
-      "ms_subset": 0.436,
-      "ms_hopcroft": 0.849
+      "ms_thompson": 0.178,
+      "ms_subset": 0.46,
+      "ms_hopcroft": 0.858
     },
     {
       "rule": "HOST_LABEL",
@@ -59,9 +59,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 6,
-      "ms_thompson": 0.135,
-      "ms_subset": 0.378,
-      "ms_hopcroft": 0.241
+      "ms_thompson": 0.137,
+      "ms_subset": 0.385,
+      "ms_hopcroft": 0.243
     },
     {
       "rule": "PUNY_LABEL",
@@ -80,9 +80,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 8,
-      "ms_thompson": 0.084,
-      "ms_subset": 0.289,
-      "ms_hopcroft": 0.273
+      "ms_thompson": 0.089,
+      "ms_subset": 0.272,
+      "ms_hopcroft": 0.272
     },
     {
       "rule": "IPV4",
@@ -101,9 +101,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 3,
-      "ms_thompson": 0.064,
-      "ms_subset": 0.162,
-      "ms_hopcroft": 0.31
+      "ms_thompson": 0.066,
+      "ms_subset": 0.167,
+      "ms_hopcroft": 0.296
     },
     {
       "rule": "IPV6",
@@ -123,8 +123,8 @@
       "k_before": 129,
       "k_after": 4,
       "ms_thompson": 0.03,
-      "ms_subset": 0.226,
-      "ms_hopcroft": 0.2
+      "ms_subset": 0.085,
+      "ms_hopcroft": 0.208
     },
     {
       "rule": "DOT",
@@ -144,8 +144,8 @@
       "k_before": 129,
       "k_after": 2,
       "ms_thompson": 0.008,
-      "ms_subset": 0.034,
-      "ms_hopcroft": 1.499
+      "ms_subset": 0.035,
+      "ms_hopcroft": 1.888
     },
     {
       "rule": "PORT",
@@ -164,9 +164,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 3,
-      "ms_thompson": 0.03,
-      "ms_subset": 0.067,
-      "ms_hopcroft": 0.354
+      "ms_thompson": 0.033,
+      "ms_subset": 0.068,
+      "ms_hopcroft": 0.178
     },
     {
       "rule": "COLON",
@@ -185,9 +185,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 2,
-      "ms_thompson": 0.009,
+      "ms_thompson": 0.008,
       "ms_subset": 0.036,
-      "ms_hopcroft": 0.149
+      "ms_hopcroft": 0.151
     },
     {
       "rule": "AT",
@@ -208,7 +208,7 @@
       "k_after": 2,
       "ms_thompson": 0.007,
       "ms_subset": 0.034,
-      "ms_hopcroft": 0.143
+      "ms_hopcroft": 0.141
     },
     {
       "rule": "SUB_DELIM",
@@ -227,9 +227,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 2,
-      "ms_thompson": 0.013,
+      "ms_thompson": 0.012,
       "ms_subset": 0.034,
-      "ms_hopcroft": 0.143
+      "ms_hopcroft": 0.142
     },
     {
       "rule": "DSLASH",
@@ -249,9 +249,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 2,
-      "ms_thompson": 0.018,
-      "ms_subset": 0.063,
-      "ms_hopcroft": 0.187
+      "ms_thompson": 0.017,
+      "ms_subset": 0.059,
+      "ms_hopcroft": 0.185
     },
     {
       "rule": "SLASH",
@@ -272,8 +272,8 @@
       "k_before": 129,
       "k_after": 2,
       "ms_thompson": 0.007,
-      "ms_subset": 0.033,
-      "ms_hopcroft": 0.143
+      "ms_subset": 0.036,
+      "ms_hopcroft": 0.144
     },
     {
       "rule": "QMARK",
@@ -293,7 +293,7 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 2,
-      "ms_thompson": 0.006,
+      "ms_thompson": 0.007,
       "ms_subset": 0.033,
       "ms_hopcroft": 0.145
     },
@@ -317,7 +317,7 @@
       "k_before": 129,
       "k_after": 2,
       "ms_thompson": 0.006,
-      "ms_subset": 0.032,
+      "ms_subset": 0.033,
       "ms_hopcroft": 0.142
     },
     {
@@ -340,9 +340,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 3,
-      "ms_thompson": 0.034,
-      "ms_subset": 0.072,
-      "ms_hopcroft": 0.201
+      "ms_thompson": 0.031,
+      "ms_subset": 0.057,
+      "ms_hopcroft": 0.185
     },
     {
       "rule": "DOUBLE_ENC",
@@ -364,9 +364,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 5,
-      "ms_thompson": 0.034,
-      "ms_subset": 0.081,
-      "ms_hopcroft": 0.235
+      "ms_thompson": 0.032,
+      "ms_subset": 0.082,
+      "ms_hopcroft": 0.233
     },
     {
       "rule": "CTRL",
@@ -389,9 +389,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 2,
-      "ms_thompson": 0.015,
-      "ms_subset": 0.039,
-      "ms_hopcroft": 0.144
+      "ms_thompson": 0.024,
+      "ms_subset": 0.043,
+      "ms_hopcroft": 0.156
     },
     {
       "rule": "PATH_SEG",
@@ -410,9 +410,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 5,
-      "ms_thompson": 0.055,
-      "ms_subset": 0.227,
-      "ms_hopcroft": 0.203
+      "ms_thompson": 0.061,
+      "ms_subset": 0.221,
+      "ms_hopcroft": 0.192
     },
     {
       "rule": "QTEXT",
@@ -431,9 +431,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 5,
-      "ms_thompson": 0.056,
-      "ms_subset": 0.311,
-      "ms_hopcroft": 0.211
+      "ms_thompson": 0.055,
+      "ms_subset": 0.211,
+      "ms_hopcroft": 0.192
     },
     {
       "rule": "EQ",
@@ -452,9 +452,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 2,
-      "ms_thompson": 0.01,
-      "ms_subset": 0.044,
-      "ms_hopcroft": 0.205
+      "ms_thompson": 0.007,
+      "ms_subset": 0.043,
+      "ms_hopcroft": 0.159
     },
     {
       "rule": "AMP",
@@ -473,9 +473,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 2,
-      "ms_thompson": 0.008,
-      "ms_subset": 0.035,
-      "ms_hopcroft": 0.198
+      "ms_thompson": 0.007,
+      "ms_subset": 0.034,
+      "ms_hopcroft": 0.146
     },
     {
       "rule": "FTEXT",
@@ -494,9 +494,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 5,
-      "ms_thompson": 0.065,
-      "ms_subset": 0.485,
-      "ms_hopcroft": 0.202
+      "ms_thompson": 0.054,
+      "ms_subset": 0.212,
+      "ms_hopcroft": 0.194
     }
   ],
   "modes": [
@@ -540,8 +540,8 @@
         "[Tt]",
         "[Vv]"
       ],
-      "ms_subset": 1.003,
-      "ms_hopcroft": 1.165
+      "ms_subset": 1.022,
+      "ms_hopcroft": 1.135
     },
     {
       "mode": "AUTHORITY",
@@ -627,8 +627,8 @@
         "[",
         "]"
       ],
-      "ms_subset": 1.337,
-      "ms_hopcroft": 1.204
+      "ms_subset": 1.342,
+      "ms_hopcroft": 1.484
     },
     {
       "mode": "PATH",
@@ -663,8 +663,8 @@
         "5",
         "?"
       ],
-      "ms_subset": 0.45,
-      "ms_hopcroft": 0.571
+      "ms_subset": 0.461,
+      "ms_hopcroft": 0.522
     },
     {
       "mode": "QUERY",
@@ -698,8 +698,8 @@
         "5",
         "="
       ],
-      "ms_subset": 0.42,
-      "ms_hopcroft": 0.547
+      "ms_subset": 0.441,
+      "ms_hopcroft": 0.51
     },
     {
       "mode": "FRAGMENT",
@@ -727,8 +727,8 @@
         "2",
         "5"
       ],
-      "ms_subset": 0.359,
-      "ms_hopcroft": 0.402
+      "ms_subset": 0.368,
+      "ms_hopcroft": 0.404
     }
   ],
   "examples": [
@@ -745,9 +745,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 4,
-      "ms_thompson": 0.022,
+      "ms_thompson": 0.02,
       "ms_subset": 0.066,
-      "ms_hopcroft": 0.209
+      "ms_hopcroft": 0.424
     },
     {
       "rule": "LABEL_A",
@@ -762,9 +762,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 3,
-      "ms_thompson": 0.028,
-      "ms_subset": 0.076,
-      "ms_hopcroft": 0.177
+      "ms_thompson": 0.03,
+      "ms_subset": 0.325,
+      "ms_hopcroft": 0.315
     },
     {
       "rule": "REDOS_NESTED",
@@ -779,9 +779,9 @@
       "hopcroft_eq_moore": true,
       "k_before": 129,
       "k_after": 2,
-      "ms_thompson": 0.023,
-      "ms_subset": 0.074,
-      "ms_hopcroft": 0.161
+      "ms_thompson": 0.03,
+      "ms_subset": 0.084,
+      "ms_hopcroft": 0.227
     }
   ]
 }

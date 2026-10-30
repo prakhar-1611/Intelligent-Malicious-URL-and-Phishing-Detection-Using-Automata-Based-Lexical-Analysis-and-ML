@@ -247,7 +247,8 @@ def dataset_stats(df: pd.DataFrame, clean_report: dict) -> dict:
     return stats
 
 
-def build(tranco_top: int, benign_urls: Path | None, seed: int, max_per_source: int | None) -> pd.DataFrame:
+def build(tranco_top: int, benign_urls: Path | None, seed: int, max_per_source: int | None,
+          keep_split: Path | None = None) -> pd.DataFrame:
     mal = pd.concat([_read_phishtank(), _read_urlhaus(), _read_openphish()], ignore_index=True)
     ben = pd.concat([_read_tranco(tranco_top, seed), _read_hn(), _read_benign_urls(benign_urls)],
                     ignore_index=True)
@@ -262,6 +263,14 @@ def build(tranco_top: int, benign_urls: Path | None, seed: int, max_per_source: 
         raise SystemExit("no raw data found: run with --download first (or place files in data/raw)")
     df, report = clean(df)
     df = split(df, seed)
+    if keep_split:
+        # before/after comparisons: domains already in an earlier dataset keep their split there,
+        # only new domains take the fresh assignment (a domain still sits in exactly one split)
+        cutoff = df.attrs.get("time_cutoff")
+        old = load_dataset(keep_split).drop_duplicates("domain").set_index("domain")["split"]
+        known = df["domain"].isin(old.index)
+        df.loc[known, "split"] = df.loc[known, "domain"].map(old)
+        df.attrs["time_cutoff"] = cutoff
     PROCESSED.mkdir(parents=True, exist_ok=True)
     df.to_csv(DATASET, index=False)
     stats = dataset_stats(df, report)
@@ -283,10 +292,12 @@ def main() -> None:
     ap.add_argument("--max-per-source", type=int, default=None)
     ap.add_argument("--hn-pages", type=int, default=45, help="pages of 1000 Hacker News links")
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--keep-split", type=Path, default=None,
+                    help="earlier dataset.csv whose split is kept for the domains it contains")
     a = ap.parse_args()
     if a.download:
         download_all(a.full_urlhaus, a.hn_pages)
-    build(a.tranco_top, a.benign_urls, a.seed, a.max_per_source)
+    build(a.tranco_top, a.benign_urls, a.seed, a.max_per_source, a.keep_split)
 
 
 if __name__ == "__main__":

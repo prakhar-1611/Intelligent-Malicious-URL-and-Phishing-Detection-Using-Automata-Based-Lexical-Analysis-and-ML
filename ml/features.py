@@ -19,6 +19,7 @@ from collections import Counter
 import numpy as np
 
 from core.types import ScanResult
+from lexer.rules import UNTRAINED_FLAGS
 from lexer.scanner import Scanner, get_scanner
 from lexer.symtab import CorpusSymbolTable
 from ml.feature_registry import ABLATION, build_registry
@@ -141,10 +142,11 @@ class FeatureExtractor:
         f["dead_state_hits"] = r.stats.get("errors", 0)
         f["backtracked_chars"] = r.stats.get("backtracked", 0)
         f["n_mode_switches"] = sum(1 for a, b in zip(r.lexemes, r.lexemes[1:]) if a.mode != b.mode)
-        f["n_flags_dfa"] = sum(fl.source == "dfa" for fl in r.flags)
-        f["n_flags_attr"] = sum(fl.source == "attr" for fl in r.flags)
-        f["flag_severity_sum"] = sum(fl.severity for fl in r.flags)
-        codes = Counter(fl.code for fl in r.flags)
+        flags = [fl for fl in r.flags if fl.code not in UNTRAINED_FLAGS]
+        f["n_flags_dfa"] = sum(fl.source == "dfa" for fl in flags)
+        f["n_flags_attr"] = sum(fl.source == "attr" for fl in flags)
+        f["flag_severity_sum"] = sum(fl.severity for fl in flags)
+        codes = Counter(fl.code for fl in flags)
         for spec in self.registry:
             if spec.name.startswith("flag_") and spec.flags:
                 f[spec.name] = float(codes[spec.flags[0]] > 0)

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { api, type Explanation } from "../api";
-import { Card, ErrorBox, HighlightedUrl, UrlInput } from "../components/common";
+import { Card, DemoGrid, ErrorBox, HighlightedUrl, PageHeader, UrlInput } from "../components/common";
 import { useAnalysis } from "../state";
 
 const GROUP_COLOR: Record<string, string> = {
@@ -24,22 +24,29 @@ export default function Explain() {
   const data = (a?.explanation ?? []).map((e) => ({ ...e, c: e.contribution ?? 0 }));
 
   return (
-    <div className="space-y-4">
-      <Card title="Explain a verdict">
+    <div className="space-y-5">
+      <PageHeader title="Explain a verdict"
+        subtitle="SHAP splits the score into per-feature pushes. Click a bar to see the exact characters and DFA states behind it." />
+      <Card>
         <UrlInput onSubmit={run} busy={busy} initial={a?.input ?? ""} />
       </Card>
       <ErrorBox error={error} />
+      {!a && (
+        <Card title="Pick a link to explain" right={<span className="text-xs text-slate-500">red bars push towards malicious, green towards safe</span>}>
+          <DemoGrid onPick={run} />
+        </Card>
+      )}
       {a && (
         <div className="grid lg:grid-cols-5 gap-4">
           <div className="lg:col-span-3">
             <Card title={`SHAP contributions (log-odds) · ${a.model}`}>
               {data.some((d) => d.contribution != null) ? (
                 <ResponsiveContainer width="100%" height={Math.max(220, data.length * 34)}>
-                  <BarChart data={data} layout="vertical" margin={{ left: 150, right: 20 }}>
-                    <XAxis type="number" />
-                    <YAxis type="category" dataKey="feature" width={150} tick={{ fontSize: 11 }} />
+                  <BarChart data={data} layout="vertical" margin={{ left: 8, right: 24, top: 4, bottom: 4 }}>
+                    <XAxis type="number" tick={{ fontSize: 12 }} />
+                    <YAxis type="category" dataKey="feature" width={160} tick={{ fontSize: 12, fontFamily: "JetBrains Mono, Consolas, monospace" }} />
                     <Tooltip formatter={(v: number) => v.toFixed(4)} />
-                    <Bar dataKey="c" onClick={(d: any) => { setSel(d); setFocusStates(d.states); }} cursor="pointer">
+                    <Bar dataKey="c" isAnimationActive={false} onClick={(d: any) => { setSel(d); setFocusStates(d.states); }} cursor="pointer">
                       {data.map((d) => <Cell key={d.feature} fill={d.c > 0 ? "#e11d48" : "#059669"}
                         opacity={sel && sel.feature !== d.feature ? 0.35 : 1} />)}
                     </Bar>
@@ -48,22 +55,22 @@ export default function Explain() {
               ) : (
                 <div className="text-sm text-slate-500">No trained model loaded: showing the flags that drive the heuristic score.</div>
               )}
-              <div className="flex flex-wrap gap-3 text-xs mt-2">
-                {Object.entries(GROUP_COLOR).map(([g, c]) => <span key={g} className="flex items-center gap-1">
+              <div className="flex flex-wrap gap-3 text-[13px] mt-2">
+                {Object.entries(GROUP_COLOR).map(([g, c]) => <span key={g} className="flex items-center gap-1 text-slate-600">
                   <span className="w-3 h-3 rounded" style={{ background: c }} />{g}</span>)}
               </div>
-              <div className="text-xs text-slate-500 mt-2">Red pushes towards malicious, green towards benign. Click a bar.</div>
+              <div className="text-[13px] text-slate-600 mt-2">Red pushes towards malicious, green towards benign. Click a bar.</div>
             </Card>
           </div>
           <div className="lg:col-span-2 space-y-4">
             <Card title="Feature → evidence">
-              <div className="space-y-1 max-h-72 overflow-auto">
+              <div className="space-y-1 max-h-[420px] overflow-auto pr-1">
                 {a.explanation.map((e) => (
-                  <button key={e.feature} onClick={() => { setSel(e); setFocusStates(e.states); }}
-                    className={`w-full text-left text-sm rounded px-2 py-1 border ${sel?.feature === e.feature ? "bg-yellow-50 border-yellow-400" : "border-transparent hover:bg-slate-50"}`}>
+                  <button key={e.feature} onClick={() => { setSel(e); setFocusStates(e.states); }} aria-pressed={sel?.feature === e.feature}
+                    className={`w-full text-left text-sm rounded-lg px-2 py-1.5 border transition-colors ${sel?.feature === e.feature ? "bg-yellow-50 border-yellow-400" : "border-transparent hover:bg-slate-50"}`}>
                     <span className="inline-block w-2 h-2 rounded-full mr-2" style={{ background: GROUP_COLOR[e.group] }} />
-                    <span className="font-mono">{e.feature}</span> = {e.value}
-                    <div className="text-xs text-slate-500 ml-4">{e.description}</div>
+                    <span className="font-mono break-all">{e.feature}</span> = <span className="tabular-nums">{e.value}</span>
+                    <div className="text-[13px] text-slate-600 ml-4">{e.description}</div>
                   </button>
                 ))}
               </div>

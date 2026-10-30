@@ -29,6 +29,22 @@ export type GraphNode = {
 };
 export type GraphEdge = { source: string; target: string; label: string; eps?: boolean };
 export type Graph = { nodes: GraphNode[]; edges: GraphEdge[] };
+export type MimePart = {
+  content_type: string; charset: string; encoding: string; disposition: string; filename: string;
+  size: number; risky: boolean; children: MimePart[];
+};
+export type EmailAnalysis = {
+  headers: { key: string; value: string; known: boolean }[];
+  flags: Flag[]; auth_results: Record<string, string>; folds: number; malformed_lines: number;
+  mime: MimePart; mime_truncated: boolean;
+  links: { text: string; href: string; text_domain: string; href_domain: string; mismatch: boolean }[];
+  urls: { url_defanged: string; verdict: Analysis["verdict"]; score: number; registered_domain: string; flags: Flag[] }[];
+  summary: {
+    verdict: "Safe" | "Suspicious" | "Phishing"; evidence_points: number; max_url_score: number;
+    deciding_rule: string; rule: string; header_flags: string[]; body_flags: string[];
+    reasons: { code: string; points: number; evidence: string }[];
+  };
+};
 
 async function call<T>(path: string, init?: RequestInit): Promise<T> {
   const r = await fetch(`/api${path}`, {
@@ -50,7 +66,8 @@ export const api = {
   health: () => call<any>("/health"),
   analyze: (url: string) => call<Analysis>("/analyze", { method: "POST", body: JSON.stringify({ url }) }),
   batch: (urls: string[]) => call<any>("/analyze/batch", { method: "POST", body: JSON.stringify({ urls }) }),
-  email: (raw: string) => call<any>("/analyze/email", { method: "POST", body: JSON.stringify({ raw }) }),
+  email: (raw: string) => call<EmailAnalysis>("/analyze/email", { method: "POST", body: JSON.stringify({ raw }) }),
+  emailSamples: () => call<Record<string, string>>("/samples/emails"),
   automataList: () => call<{ rules: string[]; examples: string[]; modes: string[] }>("/automata"),
   automaton: (name: string, stage: string) =>
     call<any>(`/automata/${encodeURIComponent(name)}?stage=${stage}`),
@@ -75,7 +92,8 @@ export const TOKEN_COLORS: Record<string, string> = {
 };
 
 export const VERDICT_STYLE: Record<string, string> = {
-  Safe: "bg-emerald-600",
-  Suspicious: "bg-amber-500",
-  Malicious: "bg-rose-600",
+  Safe: "bg-emerald-700 text-white",
+  Suspicious: "bg-amber-400 text-amber-950",
+  Malicious: "bg-rose-600 text-white",
+  Phishing: "bg-rose-600 text-white",
 };
